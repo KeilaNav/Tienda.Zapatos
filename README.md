@@ -1,53 +1,130 @@
-# TP Final - SPA Backend (Flask)
+# 🛒 TP Final - Tienda Web (Flask + SPA + Testing)
+
+---
 
 ## 📌 Descripción
-Este proyecto es una API REST desarrollada con Flask que simula un sistema de carrito de compras tipo Coffee Cart, pero de una tienda de Zapatos.
+
+Este proyecto es una aplicación web tipo tienda online con carrito de compras.
+
+Incluye:
+
+- Backend API REST con Flask
+- Base de datos SQLite
+- Frontend en HTML, CSS y JavaScript
+- Tests automatizados (Backend + E2E)
+
+La aplicación permite:
+- Visualizar productos
+- Agregar productos al carrito
+- Eliminar productos del carrito
+- Ver el total de la compra
+- Persistencia de datos en base de datos
 
 ---
 
 ## ⚙️ Tecnologías utilizadas
+
 - Python 3
 - Flask
+- SQLite
+- Flasgger (Swagger)
 - Pytest
-- Swagger (Flasgger)
+- JavaScript
+- HTML / CSS
+- Playwright (E2E Testing)
 
 ---
 
-## 🚀 Cómo ejecutar el proyecto
+# 🚀 Cómo ejecutar el proyecto
 
-1. Instalar dependencias:
+## 🔴 1. Iniciar el backend (Flask)
+
+Instalar dependencias:
+
 ```bash
-pip install flask flasgger pytest
+pip install flask flasgger pytest flask-cors
+Ejecutar servidor:
 
-2. Ejecutar el servidor: 
-    python App.py
+python App.py
 
-3. Abrir el navegador:
-    http://127.0.0.1:5000
+Servidor disponible en:
 
+http://127.0.0.1:5000
+🟢 2. Iniciar el frontend
 
-📡 Funcionalidades (Endpoints)
+Abrir index.html con Live Server o similar.
+
+Ejemplo:
+
+http://127.0.0.1:5500
+🟡 3. Instalar dependencias de testing (solo primera vez)
+npm install -D @playwright/test
+npx playwright install
+📡 Funcionalidades (API Endpoints)
 📦 Productos
 GET /products → Lista todos los productos
 🛒 Carrito
 GET /cart → Muestra el carrito
-POST /cart → Agrega un producto al carrito
-DELETE /cart/<id> → Elimina un producto del carrito
-GET /cart/total → Calcula el total de la compra
+POST /cart → Agrega un producto
+DELETE /cart/<id> → Elimina un producto
+GET /cart/total → Calcula el total
+📘 Documentación API (Swagger)
 
+Se puede probar la API desde el navegador:
 
-
-Documentación de la API
-Swagger permite probar la API desde el navegador:
 http://127.0.0.1:5000/apidocs/
+🧪 Testing
+✔ Tests de Backend (Pytest)
 
+Para ejecutar tests del backend:
 
-
-Tests
-Para ejecutar los tests automatizados:
 python -m pytest
-Los tests validan:
+Validan:
 Funcionamiento de endpoints
-Agregado y eliminación de productos
-Cálculo del total del carrito
-Respuestas correctas de la API
+Agregado de productos al carrito
+Eliminación de productos
+Cálculo del total
+Manejo de errores
+✔ Tests E2E (Playwright)
+
+Simulan un usuario real usando la aplicación desde el navegador.
+
+Validan:
+Flujo completo de compra
+Interacción con la interfaz
+Comunicación frontend ↔ backend
+Persistencia del carrito
+Cálculo del total
+▶️ Ejecución de tests
+🧪 Ejecutar tests backend
+pytest
+🧪 Ejecutar tests E2E
+npx playwright test
+👀 Ejecutar tests en modo visible (recomendado)
+npx playwright test --headed
+
+👉 Abre el navegador y muestra el paso a paso de los tests.
+
+📊 Ver reporte de tests
+npx playwright show-report
+
+Incluye:
+
+Tests aprobados
+Errores (si existen)
+Capturas automáticas
+Tiempos de ejecución
+🧪 Qué validan los tests
+✔ Backend
+Funcionamiento correcto de la API
+Gestión de productos
+Gestión del carrito
+Cálculo del total
+✔ E2E (Frontend + Backend)
+Usuario entra a la tienda
+Visualiza productos
+Agrega productos al carrito
+Elimina productos
+Ve el total actualizado
+Persistencia de datos al recargar
+Integración completa frontend ↔ backend
