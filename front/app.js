@@ -1,4 +1,4 @@
-const API = "https://tu-backend.onrender.com";
+const API = "https://tienda-zapatos-7.onrender.com/";
 
 async function loadProducts() {
 
