@@ -1,75 +1,64 @@
 const { test, expect } = require('@playwright/test');
 
-test.setTimeout(60000);
-
 const URL = 'https://tienda-zapatos-8.onrender.com';
 
 test('flujo completo tienda (frontend + backend Flask)', async ({ page }) => {
 
-  // 1. Abrir tienda
   await page.goto(URL);
 
-  // Esperar productos cargados
-  await expect(page.locator('.product').first()).toBeVisible({
-    timeout: 60000
-});
+  const product = page.locator('.product').first();
+  await expect(product).toBeVisible({ timeout: 60000 });
 
-  // 2. Agregar producto
-  await page.locator('.product button').first().scrollIntoViewIfNeeded();
+  const cartBefore = page.locator('.cart-item').count();
 
-  await page.locator('.product button').first().click();
+  await product.locator('button').click();
 
-  // 3. Ver carrito
+  // 🔥 esperar que el carrito realmente cambie
+  await expect.poll(async () => {
+    return await page.locator('.cart-item').count();
+  }).toBeGreaterThan(0);
+
   await expect(page.locator('.cart-item').first()).toBeVisible();
 
-  // 4. Ver total
-  await expect(page.locator('#total')).toContainText('Total');
-
-
+  await expect(page.locator('#total')).toContainText('$');
 });
 
 test('persistencia del carrito al recargar', async ({ page }) => {
 
   await page.goto(URL);
 
-  await expect(page.locator('.product').first()).toBeVisible({
-    timeout: 60000
-  });
+  await expect(page.locator('.product').first()).toBeVisible({ timeout: 60000 });
 
   await page.locator('.product button').first().click();
+
+  await expect.poll(async () => {
+    return await page.locator('.cart-item').count();
+  }).toBeGreaterThan(0);
 
   await page.reload();
 
   await expect(page.locator('.cart-item').first()).toBeVisible();
-
 });
 
 test('conexion frontend con backend Flask', async ({ page }) => {
 
   await page.goto(URL);
 
-  await expect(page.locator('.product').first()).toBeVisible({
-    timeout: 60000
-  });
+  await expect(page.locator('.product').first()).toBeVisible({ timeout: 60000 });
 
+  await expect(page.locator('.product')).toHaveCountGreaterThan(0);
 });
 
 test('calculo de total correcto desde backend', async ({ page }) => {
 
   await page.goto(URL);
 
-  await expect(page.locator('.product').first()).toBeVisible({
-    timeout: 60000
-  });
+  await expect(page.locator('.product').first()).toBeVisible({ timeout: 60000 });
 
-  await page.locator('button:has-text("Agregar")')
-    .first()
-    .scrollIntoViewIfNeeded();
+  await page.locator('.product button').first().click();
 
-  await page.locator('button:has-text("Agregar")')
-    .first()
-    .click();
-
-  await expect(page.locator('#total')).toContainText('$');
+  await expect.poll(async () => {
+    return await page.locator('#total').textContent();
+  }).toContain('$');
 
 });
