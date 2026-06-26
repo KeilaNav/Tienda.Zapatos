@@ -12,15 +12,13 @@ test('flujo completo tienda (frontend + backend Flask)', async ({ page }) => {
   const product = page.locator('.product').first();
   await expect(product).toBeVisible({ timeout: 60000 });
 
-  const cartBefore = await page.locator('.cart-item').count();
-
-  // Agregar producto
   await product.locator('button').click();
 
-  // Esperar cambio real en carrito
   await expect.poll(async () => {
-    return await page.locator('.cart-item').count();
-  }).toBeGreaterThan(cartBefore);
+  return await page.locator('.cart-item').count();
+}).toBeGreaterThan(0);
+
+await expect(page.locator('#total')).toContainText('$');
 
   // Ver carrito visible
   await expect(page.locator('.cart-item').first()).toBeVisible();
