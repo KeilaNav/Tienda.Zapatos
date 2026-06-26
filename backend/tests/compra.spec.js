@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-const URL = 'http://127.0.0.1:5500'; 
+const URL = 'https://tienda-zapatos-8.onrender.com/'; 
 
 
 test('flujo completo tienda (frontend + backend Flask)', async ({ page }) => {
